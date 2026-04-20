@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="J.A.R.V.I.S. - Just A Rather Very Intelligent System. An AI-powered voice assistant with a futuristic HUD interface.">
+    <title>J.A.R.V.I.S. — AI Voice Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="bg-grid"></div>
+    <div class="bg-scanline"></div>
+    <div class="particles" id="particles"></div>
+
+    <!-- Main Container -->
+    <div class="jarvis-container">
+
+        <!-- Top HUD Bar -->
+        <header class="hud-header">
+            <div class="hud-header-left">
+                <div class="status-indicator active" id="statusIndicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text">ONLINE</span>
+                </div>
+                <div class="system-label">STARK INDUSTRIES</div>
+            </div>
+            <div class="hud-header-center">
+                <h1 class="jarvis-title">
+                    <span class="title-bracket">[</span>
+                    J.A.R.V.I.S.
+                    <span class="title-bracket">]</span>
+                </h1>
+                <p class="jarvis-subtitle">Just A Rather Very Intelligent System</p>
+            </div>
+            <div class="hud-header-right">
+                <div class="datetime-display">
+                    <div class="time" id="currentTime">00:00:00</div>
+                    <div class="date" id="currentDate">LOADING...</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main HUD Content -->
+        <main class="hud-main">
+
+            <!-- Left Panel - System Stats -->
+            <aside class="hud-panel panel-left">
+                <div class="panel-header">
+                    <span class="panel-icon">◆</span>
+                    <span>SYSTEM METRICS</span>
+                </div>
+                <div class="metric-item">
+                    <label>SPEECH ENGINE</label>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="speechEngineBar" style="width: 0%"></div>
+                    </div>
+                    <span class="metric-value" id="speechEngineStatus">INIT</span>
+                </div>
+                <div class="metric-item">
+                    <label>VOICE SYNTH</label>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="voiceSynthBar" style="width: 0%"></div>
+                    </div>
+                    <span class="metric-value" id="voiceSynthStatus">INIT</span>
+                </div>
+                <div class="metric-item">
+                    <label>NLP CORE</label>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="nlpCoreBar" style="width: 0%"></div>
+                    </div>
+                    <span class="metric-value" id="nlpCoreStatus">INIT</span>
+                </div>
+                <div class="metric-item">
+                    <label>MEMORY USAGE</label>
+                    <div class="metric-bar">
+                        <div class="metric-fill" id="memoryBar" style="width: 15%"></div>
+                    </div>
+                    <span class="metric-value" id="memoryStatus">15%</span>
+                </div>
+
+                <div class="panel-divider"></div>
+
+                <div class="panel-header">
+                    <span class="panel-icon">◆</span>
+                    <span>CAPABILITIES</span>
+                </div>
+                <div class="capability-list" id="capabilityList">
+                    <div class="capability-item" data-cmd="time">⏱ Time & Date</div>
+                    <div class="capability-item" data-cmd="weather">🌤 Weather</div>
+                    <div class="capability-item" data-cmd="calc">🧮 Calculator</div>
+                    <div class="capability-item" data-cmd="search">🔍 Web Search</div>
+                    <div class="capability-item" data-cmd="joke">😄 Jokes</div>
+                    <div class="capability-item" data-cmd="note">📝 Notes</div>
+                    <div class="capability-item" data-cmd="remind">⏰ Reminders</div>
+                    <div class="capability-item" data-cmd="translate">🌐 Translate</div>
+                    <div class="capability-item" data-cmd="define">📖 Dictionary</div>
+                    <div class="capability-item" data-cmd="news">📰 News</div>
+                    <div class="capability-item" data-cmd="timer">⏳ Timer</div>
+                    <div class="capability-item" data-cmd="quote">💬 Quotes</div>
+                </div>
+            </aside>
+
+            <!-- Center - Core Interface -->
+            <section class="hud-center">
+
+                <!-- Arc Reactor Visual -->
+                <div class="arc-reactor-container" id="arcReactor">
+                    <div class="reactor-ring ring-outer">
+                        <div class="ring-segment" style="--i:0"></div>
+                        <div class="ring-segment" style="--i:1"></div>
+                        <div class="ring-segment" style="--i:2"></div>
+                        <div class="ring-segment" style="--i:3"></div>
+                        <div class="ring-segment" style="--i:4"></div>
+                        <div class="ring-segment" style="--i:5"></div>
+                        <div class="ring-segment" style="--i:6"></div>
+                        <div class="ring-segment" style="--i:7"></div>
+                    </div>
+                    <div class="reactor-ring ring-middle"></div>
+                    <div class="reactor-ring ring-inner"></div>
+                    <div class="reactor-core">
+                        <div class="core-pulse"></div>
+                        <div class="core-text" id="coreStatus">READY</div>
+                    </div>
+                    <!-- Waveform Visualizer -->
+                    <div class="waveform-container" id="waveformContainer">
+                        <canvas id="waveformCanvas" width="300" height="100"></canvas>
+                    </div>
+                </div>
+
+                <!-- Voice Control Button -->
+                <button class="voice-btn" id="voiceBtn" aria-label="Activate voice recognition">
+                    <div class="voice-btn-inner">
+                        <svg viewBox="0 0 24 24" class="mic-icon" id="micIcon">
+                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                        </svg>
+                    </div>
+                    <div class="voice-btn-ripple"></div>
+                    <div class="voice-btn-ripple ripple-2"></div>
+                    <div class="voice-btn-ripple ripple-3"></div>
+                </button>
+
+                <!-- Text Input -->
+                <div class="text-input-area">
+                    <div class="input-wrapper">
+                        <span class="input-prefix">></span>
+                        <input type="text" id="textInput" placeholder="Type a command or speak..." autocomplete="off">
+                        <button class="send-btn" id="sendBtn" aria-label="Send command">
+                            <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Current Transcript -->
+                <div class="transcript-display" id="transcriptDisplay">
+                    <span class="transcript-label">LISTENING:</span>
+                    <span class="transcript-text" id="transcriptText"></span>
+                    <span class="transcript-cursor">▌</span>
+                </div>
+            </section>
+
+            <!-- Right Panel - Conversation Log -->
+            <aside class="hud-panel panel-right">
+                <div class="panel-header">
+                    <span class="panel-icon">◆</span>
+                    <span>COMMUNICATION LOG</span>
+                </div>
+                <div class="conversation-log" id="conversationLog">
+                    <!-- Messages will be injected here -->
+                </div>
+
+                <div class="panel-divider"></div>
+
+                <div class="panel-header">
+                    <span class="panel-icon">◆</span>
+                    <span>ACTIVE TASKS</span>
+                </div>
+                <div class="tasks-container" id="tasksContainer">
+                    <div class="task-item system-task">
+                        <span class="task-status">●</span>
+                        <span>System initialized</span>
+                    </div>
+                </div>
+            </aside>
+
+        </main>
+
+        <!-- Bottom HUD Bar -->
+        <footer class="hud-footer">
+            <div class="footer-section">
+                <span class="footer-label">UPTIME:</span>
+                <span class="footer-value" id="uptime">00:00:00</span>
+            </div>
+            <div class="footer-section">
+                <span class="footer-label">QUERIES:</span>
+                <span class="footer-value" id="queryCount">0</span>
+            </div>
+            <div class="footer-section">
+                <span class="footer-label">ENGINE:</span>
+                <span class="footer-value" id="engineType">WEB SPEECH API</span>
+            </div>
+            <div class="footer-section settings-section">
+                <button class="settings-btn" id="settingsBtn" aria-label="Settings">
+                    <svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
+                </button>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⚙ SYSTEM CONFIGURATION</h2>
+                <button class="modal-close" id="modalClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label>Voice Selection</label>
+                    <select id="voiceSelect" class="hud-select"></select>
+                </div>
+                <div class="setting-group">
+                    <label>Speech Rate</label>
+                    <input type="range" id="speechRate" min="0.5" max="2" step="0.1" value="1" class="hud-range">
+                    <span class="range-value" id="rateValue">1.0x</span>
+                </div>
+                <div class="setting-group">
+                    <label>Speech Pitch</label>
+                    <input type="range" id="speechPitch" min="0" max="2" step="0.1" value="1" class="hud-range">
+                    <span class="range-value" id="pitchValue">1.0</span>
+                </div>
+                <div class="setting-group">
+                    <label>Wake Word</label>
+                    <input type="text" id="wakeWord" value="jarvis" class="hud-input" placeholder="e.g., jarvis, friday, computer">
+                </div>
+                <div class="setting-group">
+                    <label>Continuous Listening</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="continuousListening">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <label>Ollama Server URL</label>
+                    <input type="text" id="ollamaUrl" class="hud-input" value="http://localhost:11434" placeholder="http://localhost:11434">
+                </div>
+                <div class="setting-group">
+                    <label>Ollama Model</label>
+                    <input type="text" id="ollamaModel" class="hud-input" value="llama3.2:1b" placeholder="e.g., llama3.2:1b, llama3, mistral">
+                </div>
+                <div class="setting-group">
+                    <button class="hud-btn danger" id="clearDataBtn">Clear All Data</button>
+                    <button class="hud-btn" id="reconnectOllamaBtn">🔄 Reconnect</button>
+                    <button class="hud-btn primary" id="saveSettingsBtn">Save Configuration</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Context for waveform -->
+    <script src="app.js"></script>
+</body>
+</html>
